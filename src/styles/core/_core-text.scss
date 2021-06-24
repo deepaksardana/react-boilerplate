@@ -1,0 +1,35 @@
+.text {
+    &-xs {
+      font-size: $xs-font !important;
+    }
+    &-sm {
+      font-size: $sm-font !important;
+    }
+    &-md {
+      font-size: $md-font !important;
+    }
+    &-lg {
+      font-size: $lg-font !important;
+    }
+    &-xlg {
+      font-size: $xlg-font !important;
+    }
+    &-x2lg {
+      font-size: $x2lg-font !important;
+    }
+    &-x3lg {
+      font-size: $x3lg-font !important;
+    }
+  
+    &-align-left {
+      text-align: left !important;
+    }
+  
+    &-align-center {
+      text-align: center !important;
+    }
+  
+    &-align-right {
+      text-align: right !important;
+    }
+  }

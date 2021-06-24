@@ -1,0 +1,88 @@
+.margin {
+    &-0 {
+      margin: $margin-0 !important;
+    }
+    &-1 {
+      margin: $margin-1 !important;
+    }
+    &-2 {
+      margin: $margin-2 !important;
+    }
+    &-3 {
+      margin: $margin-3 !important;
+    }
+    &-4 {
+      margin: $margin-4 !important;
+    }
+    &-left {
+      &-0 {
+        margin-left: $margin-0 !important;
+      }
+      &-1 {
+        margin-left: $margin-1 !important;
+      }
+      &-2 {
+        margin-left: $margin-2 !important;
+      }
+      &-3 {
+        margin-left: $margin-3 !important;
+      }
+      &-4 {
+        margin-left: $margin-4 !important;
+      }
+    }
+  
+    &-right {
+      &-0 {
+        margin-right: $margin-0 !important;
+      }
+      &-1 {
+        margin-right: $margin-1 !important;
+      }
+      &-2 {
+        margin-right: $margin-2 !important;
+      }
+      &-3 {
+        margin-right: $margin-3 !important;
+      }
+      &-4 {
+        margin-right: $margin-4 !important;
+      }
+    }
+  
+    &-top {
+      &-0 {
+        margin-top: $margin-0 !important;
+      }
+      &-1 {
+        margin-top: $margin-1 !important;
+      }
+      &-2 {
+        margin-top: $margin-2 !important;
+      }
+      &-3 {
+        margin-top: $margin-3 !important;
+      }
+      &-4 {
+        margin-top: $margin-4 !important;
+      }
+    }
+  
+    &-bottom {
+      &-0 {
+        margin-bottom: $margin-0 !important;
+      }
+      &-1 {
+        margin-bottom: $margin-1 !important;
+      }
+      &-2 {
+        margin-bottom: $margin-2 !important;
+      }
+      &-3 {
+        margin-bottom: $margin-3 !important;
+      }
+      &-4 {
+        margin-bottom: $margin-4 !important;
+      }
+    }
+  }

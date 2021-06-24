@@ -1,0 +1,26 @@
+.border {
+    &-1 {
+      border: 1px solid !important;
+    }
+    &-top {
+      border-top: 1px solid !important;
+    }
+    &-bottom {
+      border-bottom: 1px solid !important;
+    }
+    &-left {
+      border-left: 1px solid !important;
+    }
+    &-right {
+      border-right: 1px solid !important;
+    }
+  }
+
+
+
+  .flex{
+    display: flex;
+  }
+  .flex-row {
+    flex-direction: row
+  }
