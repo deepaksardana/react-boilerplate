@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+# React Boilerplarte
+
+This projects include all work which is required to setup the application
+* Redux
+* Redux Thunk
+* Redux Saga
+* React Redux I18n
+* React Loadable
+* History
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
