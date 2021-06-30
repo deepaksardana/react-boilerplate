@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import loadable from '@loadable/component';
+import 'semantic-ui-css/semantic.min.css'
 
 import LazyLoading from "components/common/LazyLoading";
 import reportWebVitals from './reportWebVitals';
@@ -16,9 +17,7 @@ const AppIntialization = loadable(() => import('./AppIntialization'), {
 
 ReactDOM.render(
   <Provider store={store}>
-  <React.StrictMode>
     <AppIntialization history={history} />
-  </React.StrictMode>
   </Provider>,
   document.getElementById('root')
 );

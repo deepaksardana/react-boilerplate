@@ -7,7 +7,7 @@ export interface AuthState {
 }
 
 const INITIAL_STATE: AuthState = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   token: undefined!,
   user: undefined!
 };
