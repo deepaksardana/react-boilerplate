@@ -13,7 +13,7 @@ import i18nDictionary from "I18n";
 
 export const history: History = createBrowserHistory();
 
-export default function configureStore(initialState: ApplicationState) : Store<ApplicationState> {
+export default function configureStore(initialState: object) : Store<ApplicationState> {
     // create the composing function for our middlewares
     const composeEnhancers = composeWithDevTools({})
     const sagaMiddleware = createSagaMiddleware()
