@@ -7,6 +7,7 @@ This projects include all work which is required to setup the application
 * React Redux I18n
 * React Loadable
 * History
+* JWT Authentication
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
