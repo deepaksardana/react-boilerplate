@@ -1,4 +1,6 @@
 export const client = {
-    login: "/login",
-    app: "/app"
+    LOGIN: "/login",
+    REGISTER: "/register",
+    HOME: "/",
+    DAHSBOARD: "/dashboard"
 }

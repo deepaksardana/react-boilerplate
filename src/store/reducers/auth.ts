@@ -7,14 +7,16 @@ export interface AuthState {
 }
 
 const INITIAL_STATE: AuthState = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   token: undefined!,
   user: undefined!
 };
 
-export default (state: AuthState = INITIAL_STATE, action: any): AuthState => {
+const authState = (state: AuthState = INITIAL_STATE, action: any): AuthState => {
   switch (action.type) {
     default:
       return state;
   }
 }
+
+export default authState;

@@ -1,7 +1,9 @@
 import {client} from "./client";
 import {server} from "./server";
 
-export default {
+const URLRoutes = {
     client,
     server
 }
+
+export default URLRoutes;

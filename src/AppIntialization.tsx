@@ -5,13 +5,19 @@ import { History } from "history";
 import loadable from "@loadable/component";
 
 import LazyLoading from "components/common/LazyLoading";
-import requiresAuth from "./HOC/WithAuth";
+import requiresAuth from "HOC/WithAuth";
+import withoutAuth from "HOC/WithoutAuth"
+import URLRoutes from "URLRoutes";
 
-const MainContainer = loadable(() => import("components/Main"), {
+const HomeContainer = loadable(() => import("components/Home"), {
   fallback: <LazyLoading />
 });
 
 const RegisterContainer = loadable(() => import("components/Register"), {
+  fallback: <LazyLoading />
+});
+
+const LoginContainer = loadable(() => import("components/Login"), {
   fallback: <LazyLoading />
 });
 
@@ -23,13 +29,12 @@ function App(props: Props) {
   const { history } = props;
   return (
     <ConnectedRouter history={history}>
-      <>
       <Switch>
-        <Route exact={true} path="/signup" component={RegisterContainer} />
-        <Route path="/app" component={requiresAuth(MainContainer)}/>
-        <Redirect to="/app"/>
+        <Route exact={true} path={URLRoutes.client.REGISTER} component={withoutAuth(RegisterContainer)} />
+        <Route exact={true} path={URLRoutes.client.LOGIN} component={withoutAuth(LoginContainer)} />
+        <Route path={URLRoutes.client.HOME} component={requiresAuth(HomeContainer)}/>
+        <Redirect to={URLRoutes.client.HOME}/>
       </Switch>
-      </>
     </ConnectedRouter>
   );
 }

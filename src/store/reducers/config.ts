@@ -7,9 +7,11 @@ const INITIAL_STATE: ConfigState = {
 };
 
 
-export default (state: ConfigState = INITIAL_STATE, action: any): ConfigState => {
+const configState = (state: ConfigState = INITIAL_STATE, action: any): ConfigState => {
   switch (action.type) {
     default:
       return state;
   }
 }
+
+export default configState;

@@ -17,10 +17,12 @@ export interface ApplicationState {
   rext: IRextReducer;
 }
 
-export default (history: History) => combineReducers<ApplicationState>({
+const rootReducer =  (history: History) => combineReducers<ApplicationState>({
   router: connectRouter(history),
   i18n: i18nReducer,
   configState,
   authState,
   rext: rext.reducers
 })
+
+export default rootReducer;

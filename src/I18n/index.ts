@@ -1,5 +1,7 @@
 import en from "./en"
 
-export default {
+const lang = {
    en
 }
+
+export default lang;

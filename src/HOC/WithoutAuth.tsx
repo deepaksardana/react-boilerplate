@@ -7,8 +7,8 @@ interface Props {
   history: any;
 }
 
-const withAuth = (ComposedComponent: any) => {
-  class Authenticate extends React.Component<Props> {
+const withoutAuth = (ComposedComponent: any) => {
+  class NoAuthenticate extends React.Component<Props> {
     constructor(props: Props) {
       super(props);
       this._checkAndRedirect();
@@ -21,15 +21,15 @@ const withAuth = (ComposedComponent: any) => {
     _checkAndRedirect() {
       const { isAuthenticated, history } = this.props;
 
-      if (!isAuthenticated) {
-        history.push(URLRoutes.client.LOGIN);
+      if (isAuthenticated) {
+        history.push(URLRoutes.client.HOME);
       }
     }
 
     render() {
       return (
         <React.Fragment>
-          {this.props.isAuthenticated ? (
+          {!this.props.isAuthenticated ? (
             <ComposedComponent {...this.props} />
           ) : null}
         </React.Fragment>
@@ -46,8 +46,8 @@ const withAuth = (ComposedComponent: any) => {
   const mapDispatchToProps = {
   };
 
-  return connect(mapStateToProps, mapDispatchToProps)(Authenticate);
+  return connect(mapStateToProps, mapDispatchToProps)(NoAuthenticate);
 }
 
 
-export default withAuth;
+export default withoutAuth;
