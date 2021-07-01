@@ -2,9 +2,7 @@
 
 This projects include all work which is required to setup the application
 * Redux
-* Redux Thunk
 * Redux Saga
-* React Redux I18n
 * React Loadable
 * History
 * JWT Authentication
