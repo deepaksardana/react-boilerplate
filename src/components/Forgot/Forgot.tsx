@@ -11,18 +11,16 @@ interface Props {}
 
 interface State {}
 
-interface ILoginForm {
+interface IForgotForm {
   email: string;
-  password: string;
 }
 
-const passwordValidation = [requiredWithMessage()];
 const EmailValidation = [requiredWithMessage(), emailValidation];
 
-class LoginForm extends React.Component<
+class ForgotForm extends React.Component<
   Props &
-    InjectedFormProps<ILoginForm, Props> &
-    FormInstance<ILoginForm, Props>,
+    InjectedFormProps<IForgotForm, Props> &
+    FormInstance<IForgotForm, Props>,
   State
 > {
   constructor(props: any) {
@@ -35,41 +33,29 @@ class LoginForm extends React.Component<
       <div className="width-25">
         <Form onSubmit={handleSubmit(this.handleSubmit)}>
           <Field
-            type="text"
             name="email"
             label="Email"
             placeholder="Enter Email"
             component={FormInput}
             validate={EmailValidation}
           />
-          <Field
-            type="password"
-            name="password"
-            label="Password"
-            placeholder="Enter Password"
-            component={FormInput}
-            validate={passwordValidation}
-          />
-          <Link to={URLRoutes.client.REGISTER}>New User</Link>
-          <Link to={URLRoutes.client.FORGOT}>Forgot Password</Link>
-
           <Button>Submit</Button>
+          <Link to={URLRoutes.client.LOGIN}>Having Password?</Link>
         </Form>
       </div>
     );
   }
 
-  private handleSubmit(data: ILoginForm): void {
+  private handleSubmit(data: IForgotForm): void {
     console.log(data);
   }
 }
 
-const LoginContainer = reduxForm({
-  form: "Login",
+const ForgotContainer = reduxForm({
+  form: "ForgotForm",
   initialValues: {
-    email: "",
-    password: ""
+    email: ""
   }
-})(LoginForm);
+})(ForgotForm);
 
-export default LoginContainer;
+export default ForgotContainer;

@@ -21,6 +21,10 @@ const LoginContainer = loadable(() => import("components/Login"), {
   fallback: <LazyLoading />
 });
 
+const ForgotContainer = loadable(() => import("components/Forgot"), {
+  fallback: <LazyLoading />
+});
+
 interface Props {
   history: History;
 }
@@ -32,6 +36,7 @@ function App(props: Props) {
       <Switch>
         <Route exact={true} path={URLRoutes.client.REGISTER} component={withoutAuth(RegisterContainer)} />
         <Route exact={true} path={URLRoutes.client.LOGIN} component={withoutAuth(LoginContainer)} />
+        <Route exact={true} path={URLRoutes.client.FORGOT} component={withoutAuth(ForgotContainer)} />
         <Route path={URLRoutes.client.HOME} component={requiresAuth(HomeContainer)}/>
         <Redirect to={URLRoutes.client.HOME}/>
       </Switch>
