@@ -1,0 +1,11 @@
+.custom-svg-icon {
+    border: 1px solid transparent;
+    &.large {
+        width: 2em;
+        height: 2em;
+    }
+
+    &.circular {
+        border-radius: 100%;
+    }
+}

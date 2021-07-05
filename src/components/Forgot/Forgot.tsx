@@ -6,21 +6,19 @@ import Button from "components/common/Button";
 import { FormInput } from "components/common/FormInputs";
 import { requiredWithMessage, emailValidation } from "utils/FormValidations";
 import URLRoutes from "URLRoutes";
+import { IForgotPassword } from "interface";
 
 interface Props {}
 
 interface State {}
 
-interface IForgotForm {
-  email: string;
-}
 
 const EmailValidation = [requiredWithMessage(), emailValidation];
 
 class ForgotForm extends React.Component<
   Props &
-    InjectedFormProps<IForgotForm, Props> &
-    FormInstance<IForgotForm, Props>,
+    InjectedFormProps<IForgotPassword, Props> &
+    FormInstance<IForgotPassword, Props>,
   State
 > {
   constructor(props: any) {
@@ -46,7 +44,7 @@ class ForgotForm extends React.Component<
     );
   }
 
-  private handleSubmit(data: IForgotForm): void {
+  private handleSubmit(data: IForgotPassword): void {
     console.log(data);
   }
 }

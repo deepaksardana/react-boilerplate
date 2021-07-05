@@ -2,29 +2,43 @@ import * as React from "react";
 import { Form } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { reduxForm, InjectedFormProps, FormInstance, Field } from "redux-form";
+import { connect } from "react-redux";
+
 import Button from "components/common/Button";
 import { FormInput } from "components/common/FormInputs";
 import { requiredWithMessage, emailValidation } from "utils/FormValidations";
 import URLRoutes from "URLRoutes";
+import { ApplicationState, AuthState, rext } from "store/reducers";
+import { ILogin } from "interface";
+import { ActionCreator, loginAction } from "store/actions";
+import { getAuthState } from "store/selectors";
 
-interface Props {}
+interface DispatchProps {
+  requestLogin: ActionCreator;
+  unmountLogin: ActionCreator;
+}
+
+interface StateProps {
+  loginState: AuthState;
+  initialValues: ILogin;
+}
+
+interface OwnProps {
+
+}
+
+type Props = DispatchProps & StateProps & OwnProps;
+type FormProps = Props &
+InjectedFormProps<ILogin, any> &
+FormInstance<ILogin, Props>;
+
 
 interface State {}
-
-interface ILoginForm {
-  email: string;
-  password: string;
-}
 
 const passwordValidation = [requiredWithMessage()];
 const EmailValidation = [requiredWithMessage(), emailValidation];
 
-class LoginForm extends React.Component<
-  Props &
-    InjectedFormProps<ILoginForm, Props> &
-    FormInstance<ILoginForm, Props>,
-  State
-> {
+class LoginForm extends React.Component<FormProps, State> {
   constructor(props: any) {
     super(props);
   }
@@ -59,17 +73,35 @@ class LoginForm extends React.Component<
     );
   }
 
-  private handleSubmit(data: ILoginForm): void {
+  componentWillUnmount(): void {
+    this.props.unmountLogin();
+  }
+
+  private handleSubmit = (data: ILogin): void => {
     console.log(data);
+    this.props.requestLogin(data)
   }
 }
 
 const LoginContainer = reduxForm({
   form: "Login",
-  initialValues: {
-    email: "",
-    password: ""
-  }
+  enableReinitialize: true
 })(LoginForm);
 
-export default LoginContainer;
+
+const mapStateToProps = (state: ApplicationState, ownProps: OwnProps): StateProps => {
+  return {
+    loginState: getAuthState(state),
+    initialValues: {
+      email: "",
+      password: ""
+    }
+  }
+};
+
+const mapDispatchStateToProps: DispatchProps = {
+  requestLogin: loginAction.request,
+  unmountLogin: loginAction.cancel
+};
+
+export default  connect<StateProps, DispatchProps, OwnProps, ApplicationState>(mapStateToProps, mapDispatchStateToProps)(LoginContainer);

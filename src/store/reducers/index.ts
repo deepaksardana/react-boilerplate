@@ -7,6 +7,7 @@ import authState, { AuthState } from "./auth";
 import configState, { ConfigState } from "./config"
 import { createRext, IRextReducer } from "store/baseStoreProviders";
 
+export type { AuthState } from "./auth";
 export const rext = createRext();
 export interface ApplicationState {
   router: RouterState;

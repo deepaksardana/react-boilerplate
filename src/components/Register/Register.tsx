@@ -2,31 +2,40 @@ import * as React from "react";
 import { Form } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { reduxForm, InjectedFormProps, FormInstance, Field } from "redux-form";
+import { connect } from "react-redux";
+
 import Button from "components/common/Button";
 import { FormInput } from "components/common/FormInputs";
 import { requiredWithMessage, emailValidation } from "utils/FormValidations";
 import URLRoutes from "URLRoutes";
+import { ApplicationState, AuthState, rext } from "store/reducers";
+import { IRegister } from "interface";
+import { ActionCreator, registerAction } from "store/actions";
+import { getAuthState } from "store/selectors";
 
-interface Props {}
+interface DispatchProps {
+  requestRegister: ActionCreator;
+  unmountRegister: ActionCreator;
+}
+
+interface StateProps {
+  registerState: AuthState;
+  initialValues: IRegister;
+}
+
+interface OwnProps {}
+
+type Props = DispatchProps & StateProps & OwnProps;
+type FormProps = Props &
+  InjectedFormProps<IRegister, any> &
+  FormInstance<IRegister, Props>;
 
 interface State {}
-
-interface IRegisterForm {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
 
 const RequiredValidation = [requiredWithMessage()];
 const EmailValidation = [requiredWithMessage(), emailValidation];
 
-class RegisterForm extends React.Component<
-  Props &
-    InjectedFormProps<IRegisterForm, Props> &
-    FormInstance<IRegisterForm, Props>,
-  State
-> {
+class RegisterForm extends React.Component<FormProps, State> {
   constructor(props: any) {
     super(props);
   }
@@ -72,19 +81,41 @@ class RegisterForm extends React.Component<
     );
   }
 
-  private handleSubmit(data: IRegisterForm): void {
-    console.log(data);
+  componentWillUnmount(): void {
+    this.props.unmountRegister();
+  }
+
+  private handleSubmit = (data: IRegister): void => {
+    this.props.requestRegister(data);
   }
 }
 
 const RegisterContainer = reduxForm({
   form: "RegisterForm",
-  initialValues: {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: ""
-  }
+  enableReinitialize: true
 })(RegisterForm);
 
-export default RegisterContainer;
+const mapStateToProps = (
+  state: ApplicationState,
+  ownProps: OwnProps
+): StateProps => {
+  return {
+    registerState: getAuthState(state),
+    initialValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: ""
+    }
+  };
+};
+
+const mapDispatchStateToProps: DispatchProps = {
+  requestRegister: registerAction.request,
+  unmountRegister: registerAction.cancel
+};
+
+export default connect<StateProps, DispatchProps, OwnProps, ApplicationState>(
+  mapStateToProps,
+  mapDispatchStateToProps
+)(RegisterContainer);

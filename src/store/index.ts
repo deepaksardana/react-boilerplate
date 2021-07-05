@@ -1,4 +1,4 @@
-import { applyMiddleware, createStore, Store, Dispatch } from "redux";
+import { applyMiddleware, createStore, Store } from "redux";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { routerMiddleware } from 'connected-react-router';
 import { History, createBrowserHistory } from 'history';

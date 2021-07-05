@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from "react-redux";
 import loadable from '@loadable/component';
 import 'semantic-ui-css/semantic.min.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 import LazyLoading from "components/common/LazyLoading";
 import reportWebVitals from './reportWebVitals';
@@ -18,6 +20,7 @@ const AppIntialization = loadable(() => import('./AppIntialization'), {
 ReactDOM.render(
   <Provider store={store}>
     <AppIntialization history={history} />
+    <ToastContainer />
   </Provider>,
   document.getElementById('root')
 );

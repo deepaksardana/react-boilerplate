@@ -3,7 +3,7 @@ import {forEach, replace, keys } from "lodash";
 export function fetchPostRequest(controller: AbortController, url: string, token: string, body: any, method?: string, headers?: Headers): Promise<any> {
   return fetch(url, {
     method: method || 'Post',
-    signal: controller.signal,
+    signal: controller && controller.signal,
     headers: checkAndAppendHeaders(headers!, token, body),
     body: body instanceof FormData ? body : JSON.stringify(body)
   }).then(handleResponse);
@@ -12,7 +12,7 @@ export function fetchPostRequest(controller: AbortController, url: string, token
 export function fetchGetRequest(controller: AbortController, url: string, token: string, method?: string, headers?: Headers): Promise<any> {
   return fetch(url, {
     method: method || 'get',
-    signal: controller.signal,
+    signal: controller && controller.signal,
     headers: checkAndAppendHeaders(headers!, token),
   }).then(handleResponse);
 }

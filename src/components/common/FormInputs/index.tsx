@@ -1,6 +1,5 @@
 import { Form, Dropdown } from "semantic-ui-react";
 
-
 const Error = (props: any) => {
   const {
     meta: { error, touched }

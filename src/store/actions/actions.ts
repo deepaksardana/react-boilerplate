@@ -15,6 +15,10 @@ export interface RequestType {
    * The request failed.
    */
   FAILURE: string;
+  /**
+   * The request canceled
+   */
+  CANCEL: string;
 }
 /**
  * Defines our convention for structuring actions.
@@ -38,7 +42,7 @@ export interface ActionCreator {
  * @returns {RequestType}
  */
 export function defineRequestType(base: string): RequestType {
-  return ["REQUEST", "SUCCESS", "FAILURE"].reduce<RequestType>((acc: any, type) => {
+  return ["REQUEST", "SUCCESS", "FAILURE", "CANCEL"].reduce<RequestType>((acc: any, type) => {
     acc[type] = `${base}_${type}`;
     return acc;
   }, {} as RequestType);
