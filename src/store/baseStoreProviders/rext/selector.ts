@@ -1,8 +1,8 @@
 import { IRextReducer, IRextState, IRextInfo, IRextItem } from "./keys";
 import { defaultRextInfo, defaultRextItem } from "./reducer";
-export function getRextState(rext: IRextReducer, identity: string, defaultValue: any): IRextState {
-  const info: IRextInfo = rext.info[identity] || defaultRextInfo;
-  const item: IRextItem = rext.items[identity] || defaultRextItem;
+export function getRextState(rext: IRextReducer, defaultValue: any): IRextState {
+  const info: IRextInfo = rext.info || defaultRextInfo;
+  const item: IRextItem = rext.items || defaultRextItem;
   return {
     creationInProgress: info.creationInProgress,
     updatingInProgress: info.updatingInProgress,
@@ -12,6 +12,7 @@ export function getRextState(rext: IRextReducer, identity: string, defaultValue:
     message: info.message,
     data: item.data || defaultValue,
     list: item.list || [],
-    resources: rext.resources[identity]
+    resources: rext.resources,
+    isCancelled: rext.info.isCancelled
   }
 }

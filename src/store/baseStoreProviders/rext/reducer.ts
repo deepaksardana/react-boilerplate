@@ -1,5 +1,5 @@
-import { REXT_CREATE, REXT_FETCH, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } from './actions';
-import { RextInfoReducer, IRextAction, RextItemsReducer, RextResourcesReducer, IRextInfo, IRextItem, IRextKeys, IRextParams } from "./keys";
+import { ActionIdentity } from './actions';
+import { IRextAction, RextResourcesReducer, IRextInfo, IRextItem, IRextKeys, IRextParams } from "./keys";
 export const defaultRextInfo: IRextInfo = {
   creationInProgress: false,
   fetching: false,
@@ -7,16 +7,16 @@ export const defaultRextInfo: IRextInfo = {
   hasError: false,
   message: undefined,
   params: undefined,
-  updatingInProgress: false
+  updatingInProgress: false,
+  isCancelled: false
 }
 export const defaultRextItem: IRextItem = {
   data: {},
   list: []
 }
-export const info = (info: RextInfoReducer = {}, action: IRextAction) => {
-  const { type, payload, meta } = action;
-  const { keys } = meta;
-  const previousStateForIdentitiy = info[keys.identity] || defaultRextInfo;
+export const info = (info: IRextInfo = defaultRextInfo, action: IRextAction, actionIdentity: ActionIdentity) => {
+  const { type, payload } = action;
+  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } = actionIdentity;
   switch (type) {
     case REXT_FETCH.REQUEST:
     case REXT_CREATE.REQUEST:
@@ -24,15 +24,14 @@ export const info = (info: RextInfoReducer = {}, action: IRextAction) => {
     case REXT_LIST.REQUEST:
       return {
         ...info,
-        [keys.identity]: {
-          params: payload.params,
-          fetchingList: type === REXT_LIST.REQUEST ? true : previousStateForIdentitiy.fetchingList,
-          fetching: type === REXT_FETCH.REQUEST ? true : previousStateForIdentitiy.fetching,
-          updatingInProgress: type === REXT_UPDATE.REQUEST ? true : previousStateForIdentitiy.updatingInProgress,
-          creationInProgress: type === REXT_CREATE.REQUEST ? true : previousStateForIdentitiy.creationInProgress,
-          hasError: false,
-          message: undefined
-        }        
+        params: payload.params,
+        fetchingList: type === REXT_LIST.REQUEST ? true : info.fetchingList,
+        fetching: type === REXT_FETCH.REQUEST ? true : info.fetching,
+        updatingInProgress: type === REXT_UPDATE.REQUEST ? true : info.updatingInProgress,
+        creationInProgress: type === REXT_CREATE.REQUEST ? true : info.creationInProgress,
+        hasError: false,
+        message: undefined,
+        isCancelled: false
       }
     case REXT_FETCH.SUCCESS:
     case REXT_CREATE.SUCCESS:
@@ -40,15 +39,13 @@ export const info = (info: RextInfoReducer = {}, action: IRextAction) => {
     case REXT_LIST.SUCCESS:
       return {
         ...info,
-        [keys.identity]: {
-          params: payload.params,
-          fetchingList: type === REXT_LIST.SUCCESS ? false : previousStateForIdentitiy.fetchingList,
-          fetching: type === REXT_FETCH.SUCCESS ? false : previousStateForIdentitiy.fetching,
-          updatingInProgress: type === REXT_UPDATE.SUCCESS ? false : previousStateForIdentitiy.updatingInProgress,
-          creationInProgress: type === REXT_CREATE.SUCCESS ? false : previousStateForIdentitiy.creationInProgress,
-          hasError: false,
-          message: payload.message
-        }
+        params: payload.params,
+        fetchingList: type === REXT_LIST.SUCCESS ? false : info.fetchingList,
+        fetching: type === REXT_FETCH.SUCCESS ? false : info.fetching,
+        updatingInProgress: type === REXT_UPDATE.SUCCESS ? false : info.updatingInProgress,
+        creationInProgress: type === REXT_CREATE.SUCCESS ? false : info.creationInProgress,
+        hasError: false,
+        message: payload.message
       }
     case REXT_FETCH.FAILURE:
     case REXT_CREATE.FAILURE:
@@ -56,28 +53,40 @@ export const info = (info: RextInfoReducer = {}, action: IRextAction) => {
     case REXT_LIST.FAILURE:
       return {
         ...info,
-        [keys.identity]: {
-          params: payload.params,
-          fetchingList: type === REXT_LIST.FAILURE ? false : previousStateForIdentitiy.fetchingList,
-          fetching: type === REXT_FETCH.FAILURE ? false : previousStateForIdentitiy.fetching,
-          updatingInProgress: type === REXT_UPDATE.FAILURE ? false : previousStateForIdentitiy.updatingInProgress,
-          creationInProgress: type === REXT_CREATE.FAILURE ? false : previousStateForIdentitiy.creationInProgress,
-          hasError: true,
-          message: payload.message
-        }
+        params: payload.params,
+        fetchingList: type === REXT_LIST.FAILURE ? false : info.fetchingList,
+        fetching: type === REXT_FETCH.FAILURE ? false : info.fetching,
+        updatingInProgress: type === REXT_UPDATE.FAILURE ? false : info.updatingInProgress,
+        creationInProgress: type === REXT_CREATE.FAILURE ? false : info.creationInProgress,
+        hasError: true,
+        message: payload.message
+      }
+    case REXT_FETCH.CANCEL:
+    case REXT_CREATE.CANCEL:
+    case REXT_UPDATE.CANCEL:
+    case REXT_LIST.CANCEL:
+      return {
+        ...info,
+        params: payload.params,
+        fetchingList: type === REXT_LIST.CANCEL ? false : info.fetchingList,
+        fetching: type === REXT_FETCH.CANCEL ? false : info.fetching,
+        updatingInProgress: type === REXT_UPDATE.CANCEL ? false : info.updatingInProgress,
+        creationInProgress: type === REXT_CREATE.CANCEL ? false : info.creationInProgress,
+        hasError: false,
+        message: "Cancelled",
+        isCancelled: true
       }
     case UNMOUNT_REXT: {
-      delete info[keys.identity]
-      return info
+      return defaultRextInfo
     }
     default:
       return info
   }
 }
-export const items = (items: RextItemsReducer = {}, action: IRextAction) => {
+export const items = (items: IRextItem = defaultRextItem, action: IRextAction, actionIdentity: ActionIdentity) => {
   const { type, payload, meta } = action;
   const { keys } = meta;
-  const previousStateForIdentitiy = items[keys.identity] || defaultRextItem;
+  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } = actionIdentity;
   switch (type) {
     case REXT_FETCH.SUCCESS:
     case REXT_CREATE.SUCCESS:
@@ -85,46 +94,46 @@ export const items = (items: RextItemsReducer = {}, action: IRextAction) => {
       return {
         ...items,
         [keys.identity]: {
-          list: previousStateForIdentitiy.list,
-          data: getData(previousStateForIdentitiy.data, payload.items, keys, payload.params, type )
+          list: items.list,
+          data: getData(items.data, payload.items, keys, payload.params, type, false)
         }
       }
     case REXT_LIST.SUCCESS:
       return {
         ...items,
         [keys.identity]: {
-          data: previousStateForIdentitiy.data,
-          list: getData(previousStateForIdentitiy.list, payload.items, keys, payload.params, type )
+          data: items.data,
+          list: getData(items.list, payload.items, keys, payload.params, type, true)
         }
       }
-    case UNMOUNT_REXT: {
-      delete items[keys.identity]
-      return items
+      case UNMOUNT_REXT: {
+      return defaultRextItem
     }
     default:
       return items
   }
 }
-function getData(previousData: any, newData: any, keys: IRextKeys, params: IRextParams | undefined, type: string) {
-  if(keys.transformation) {
-    if(keys.maintainOldValues) {
+function getData(previousData: any, newData: any, keys: IRextKeys, params: IRextParams | undefined, type: string, isList: boolean) {
+  if (keys.transformation) {
+    if (keys.maintainOldValues) {
       return keys.transformation(newData, previousData, params)
     }
     return keys.transformation(newData);
   } else {
-    if(keys.maintainOldValues) {
-      if(type === REXT_LIST.SUCCESS) {
+    if (keys.maintainOldValues) {
+      if (isList) {
         return [...previousData, ...newData]
       } else {
-        return {...previousData, ...newData}
+        return { ...previousData, ...newData }
       }
     }
     return newData
   }
 }
-export const resources = (resources: RextResourcesReducer = {}, action: IRextAction) => {
+export const resources = (resources: RextResourcesReducer = {}, action: IRextAction, actionIdentity: ActionIdentity) => {
   const { type, payload, meta } = action
   const { keys } = meta;
+  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } = actionIdentity;
   switch (type) {
     case REXT_FETCH.REQUEST:
     case REXT_CREATE.REQUEST:
@@ -136,9 +145,8 @@ export const resources = (resources: RextResourcesReducer = {}, action: IRextAct
           [keys.identity]: payload.resources
         }
       }
-    case UNMOUNT_REXT: {
-      delete resources[keys.identity]
-      return resources
+      case UNMOUNT_REXT: {
+      return {}
     }
     default:
       return resources

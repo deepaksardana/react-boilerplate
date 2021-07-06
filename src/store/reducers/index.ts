@@ -5,16 +5,16 @@ import { reducer as formReducer, FormStateMap } from 'redux-form'
 
 import authState, { AuthState } from "./auth";
 import configState, { ConfigState } from "./config"
-import { createRext, IRextReducer } from "store/baseStoreProviders";
-
+import { textRext } from "rext";
+import { IRextReducer } from "store/baseStoreProviders";
 export type { AuthState } from "./auth";
-export const rext = createRext();
+
 export interface ApplicationState {
   router: RouterState;
   form: FormStateMap;
   configState: ConfigState;
   authState: AuthState;
-  rext: IRextReducer;
+  textRext: IRextReducer;
 }
 
 const rootReducer =  (history: History) => combineReducers<ApplicationState>({
@@ -22,7 +22,7 @@ const rootReducer =  (history: History) => combineReducers<ApplicationState>({
   form: formReducer,
   configState,
   authState,
-  rext: rext.reducers
+  textRext: textRext.reducers
 })
 
 export default rootReducer;

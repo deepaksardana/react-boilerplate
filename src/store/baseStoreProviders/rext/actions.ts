@@ -1,16 +1,30 @@
 import { defineRequestType, RequestType } from "../../actions/actions";
 import { IRextParams, IRextKeys, IRextAction } from "./keys";
-export const REXT_FETCH: RequestType = defineRequestType("@CUSTOM_REDUX_REXT_FETCH");
-export const REXT_UPDATE: RequestType = defineRequestType("@CUSTOM_REDUX_REXT_UPDATE");
-export const REXT_CREATE: RequestType = defineRequestType("@CUSTOM_REDUX_REXT_CREATE");
-export const REXT_LIST: RequestType = defineRequestType("@CUSTOM_REDUX_REXT_LIST");
-export const UNMOUNT_REXT: string = "@CUSTOM_REDUX_UNMOUNT_REXT";
-export const rextFetch = {
-  request: (uniqueKey: string, keys: IRextKeys, params: IRextParams, resources?: any): IRextAction => {
+
+export interface ActionIdentity {
+  REXT_FETCH :RequestType;
+  REXT_UPDATE :RequestType;
+  REXT_CREATE :RequestType;
+  REXT_LIST :RequestType;
+  UNMOUNT_REXT: string;
+}
+
+export function createIdentityAction(identity: string): ActionIdentity {
+  return {
+    REXT_FETCH: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_FETCH`),
+    REXT_UPDATE: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_UPDATE`),
+    REXT_CREATE: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_CREATE`),
+    REXT_LIST: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_LIST`),
+    UNMOUNT_REXT: `@${identity}CUSTOM_REDUX_UNMOUNT_REXT`
+  }
+}
+
+export const rextActionFunctions = {
+  request: (actions:RequestType, uniqueKey: string, keys: IRextKeys, params: IRextParams, resources?: any): IRextAction => {
     return {
-      type: REXT_FETCH.REQUEST,
+      type: actions.REQUEST,
       meta: {
-        uniqueKey, keys
+        uniqueKey, keys, actions
       },
       payload: {
         params,
@@ -18,145 +32,43 @@ export const rextFetch = {
       }
     };
   },
-  success: (uniqueKey: string, keys: IRextKeys, params: IRextParams, items: any, message: string):
+  success: (actions:RequestType, uniqueKey: string, keys: IRextKeys, params: IRextParams, items: any, message: string):
     IRextAction => {
     return {
-      type: REXT_FETCH.SUCCESS,
+      type: actions.SUCCESS,
       meta: {
-        uniqueKey, keys
+        uniqueKey, keys, actions
       },
       payload: {
         params, items, message
       }
     };
   },
-  failure: (uniqueKey: string, keys: IRextKeys, params: IRextParams, message: string): IRextAction => {
+  failure: (actions:RequestType, uniqueKey: string, keys: IRextKeys, params: IRextParams, message: string): IRextAction => {
     return {
-      type: REXT_FETCH.FAILURE,
+      type: actions.FAILURE,
       meta: {
-        uniqueKey, keys
+        uniqueKey, keys, actions
       },
       payload: {
         params, message
       }
     };
-  }
+  },
+  cancel: (actions: RequestType, uniqueKey: string, keys: IRextKeys): IRextAction => {
+    return {
+      type: actions.CANCEL,
+      meta: {
+        uniqueKey, keys, actions
+      },
+      payload: {
+      }
+    };
+  },
 };
-export const rextCreate = {
-  request: (uniqueKey: string, keys: IRextKeys, params: IRextParams, resources?: any): IRextAction => {
-    return {
-      type: REXT_CREATE.REQUEST,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params,
-        resources
-      }
-    };
-  },
-  success: (uniqueKey: string, keys: IRextKeys, params: IRextParams, items: any, message: string):
-    IRextAction => {
-    return {
-      type: REXT_CREATE.SUCCESS,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params, items, message
-      }
-    };
-  },
-  failure: (uniqueKey: string, keys: IRextKeys, params: IRextParams, message: string): IRextAction => {
-    return {
-      type: REXT_CREATE.FAILURE,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params, message
-      }
-    };
-  }
-};
-export const rextUpdate = {
-  request: (uniqueKey: string, keys: IRextKeys, params: IRextParams, resources?: any): IRextAction => {
-    return {
-      type: REXT_UPDATE.REQUEST,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params,
-        resources
-      }
-    };
-  },
-  success: (uniqueKey: string, keys: IRextKeys, params: IRextParams, items: any, message: string):
-    IRextAction => {
-    return {
-      type: REXT_UPDATE.SUCCESS,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params, items, message
-      }
-    };
-  },
-  failure: (uniqueKey: string, keys: IRextKeys, params: IRextParams, message: string): IRextAction => {
-    return {
-      type: REXT_UPDATE.FAILURE,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params, message
-      }
-    };
-  }
-};
-export const rextList = {
-  request: (uniqueKey: string, keys: IRextKeys, params: IRextParams, resources?: any): IRextAction => {
-    return {
-      type: REXT_LIST.REQUEST,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params,
-        resources
-      }
-    };
-  },
-  success: (uniqueKey: string, keys: IRextKeys, params: IRextParams, items: any, message: string):
-    IRextAction => {
-    return {
-      type: REXT_LIST.SUCCESS,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params, items, message
-      }
-    };
-  },
-  failure: (uniqueKey: string, keys: IRextKeys, params: IRextParams, message: string): IRextAction => {
-    return {
-      type: REXT_LIST.FAILURE,
-      meta: {
-        uniqueKey, keys
-      },
-      payload: {
-        params, message
-      }
-    };
-  }
-};
-export const unmountRext = (uniqueKey: string, keys: IRextKeys): IRextAction => ({
-  type: UNMOUNT_REXT,
-  meta: {
-    keys, uniqueKey
-  },
-  payload: {}
-})
+
+export const rextUnmount = (type: string, uniqueKey: string, keys: IRextKeys): {type: string} => {
+  return {
+    type
+  };
+}

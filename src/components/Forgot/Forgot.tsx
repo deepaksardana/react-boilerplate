@@ -45,7 +45,6 @@ class ForgotForm extends React.Component<
   }
 
   private handleSubmit(data: IForgotPassword): void {
-    console.log(data);
   }
 }
 

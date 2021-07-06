@@ -8,7 +8,7 @@ import Button from "components/common/Button";
 import { FormInput } from "components/common/FormInputs";
 import { requiredWithMessage, emailValidation } from "utils/FormValidations";
 import URLRoutes from "URLRoutes";
-import { ApplicationState, AuthState, rext } from "store/reducers";
+import { ApplicationState, AuthState } from "store/reducers";
 import { IRegister } from "interface";
 import { ActionCreator, registerAction } from "store/actions";
 import { getAuthState } from "store/selectors";

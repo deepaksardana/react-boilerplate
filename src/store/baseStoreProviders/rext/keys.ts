@@ -1,16 +1,26 @@
 import { Reducer, Action } from "redux";
-export type IRextActionDefinition = (keys: IRextKeys, params: IRextParams, resources?: any) => IRextAction;
-export type IRextUnmountActionDefinition = (keys: IRextKeys) => IRextAction;
+import { RequestType } from "store/actions";
+
+export type IRextActionDefinition = (params: IRextParams, resources?: any) => IRextAction;
+export type IRextActionCancelDefinition = () => IRextAction;
+
+export type IRextUnmountActionDefinition = () => {type: string};
+
 export interface IRextActionCreators {
   requestRext: IRextActionDefinition;
+  requestRextCancel: IRextActionCancelDefinition;
   updateRext: IRextActionDefinition;
+  updateRextCancel: IRextActionDefinition;
   createRext: IRextActionDefinition;
+  createRextCancel: IRextActionDefinition;
   listRext: IRextActionDefinition;
+  listRextCancel: IRextActionDefinition;
   unmountRext: IRextUnmountActionDefinition;
 }
 export interface IRextMeta {
   uniqueKey: string;
   keys: IRextKeys;
+  actions: RequestType;
 }
 export interface IRextKeys {
   identity: string,
@@ -47,27 +57,24 @@ export interface IRextInfo {
   creationInProgress?: boolean;
   hasError?: boolean;
   message?: string;
+  isCancelled: boolean;
 }
 export interface IRextItem {
   data?: any;
   list?: Array<any>;
 }
-export interface RextInfoReducer {
-  [key: string]: IRextInfo;
-}
 export interface RextResourcesReducer {
   [key: string]: any;
 }
-export interface RextItemsReducer {
-  [key: string]: IRextItem
-}
+
 export interface IRextReducer {
-  info: RextInfoReducer;
-  resources: RextResourcesReducer;
-  items: RextItemsReducer;
+  info: IRextInfo;
+  resources: any;
+  items: IRextItem;
 }
 export interface IRext extends IRextActionCreators {
   reducers: Reducer<IRextReducer, IRextAction>;
+  saga: any;
 }
 /**
  * Selector
@@ -82,4 +89,5 @@ export interface IRextState {
   error: boolean;
   message: string | undefined;
   list: Array<any>;
+  isCancelled: boolean;
 }
