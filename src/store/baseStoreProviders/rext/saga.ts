@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { takeEvery, put, call, select } from 'redux-saga/effects';
+import { takeEvery, put, call, select, fork } from 'redux-saga/effects';
 import {
   REXT_CREATE,
   REXT_FETCH,
@@ -13,7 +13,8 @@ import {
 import { getToken, getBaseUrl } from "../../selectors";
 import { fetchGetRequest, fetchPostRequest, generateUrlWithRequestParams, generateQueryParamsString } from "Api";
 import { IRextAction, IRextParams, IRextKeys } from "./keys";
-export function* performRequestRextOperation(action: IRextAction): IterableIterator<{}> {
+
+function* performRequestRextOperation(action: IRextAction): IterableIterator<{}> {
   const { meta, payload } = action;
   try {
     const token: string = (yield select(getToken))!;
@@ -50,12 +51,14 @@ export function* performRequestRextOperation(action: IRextAction): IterableItera
     }
   }
 }
-export function* watchRextEvent(): SagaIterator {
+
+function* watchRextEvent(): SagaIterator {
   yield takeEvery(REXT_CREATE.REQUEST, performRequestRextOperation);
   yield takeEvery(REXT_FETCH.REQUEST, performRequestRextOperation);
   yield takeEvery(REXT_LIST.REQUEST, performRequestRextOperation);
   yield takeEvery(REXT_UPDATE.REQUEST, performRequestRextOperation);
 }
+
 function getFullUrl(baseUrl: string, keys: IRextKeys, params?: IRextParams): string {
   let url = `${baseUrl}${keys.url}`;
   if (params && params.urlParams) {
@@ -66,3 +69,5 @@ function getFullUrl(baseUrl: string, keys: IRextKeys, params?: IRextParams): str
   }
   return url;
 }
+
+export const rextEventRoot = fork(watchRextEvent);

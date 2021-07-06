@@ -1,4 +1,4 @@
 export { createRext } from "./createRext";
-export { watchRextEvent } from "./saga";
+export { rextEventRoot } from "./saga";
 export * from "./selector";
 export * from "./keys";
