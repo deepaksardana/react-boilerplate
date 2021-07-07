@@ -16,7 +16,7 @@ export const defaultRextItem: IRextItem = {
 }
 export const info = (info: IRextInfo = defaultRextInfo, action: IRextAction, actionIdentity: ActionIdentity) => {
   const { type, payload } = action;
-  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } = actionIdentity;
+  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST } = actionIdentity;
   switch (type) {
     case REXT_FETCH.REQUEST:
     case REXT_CREATE.REQUEST:
@@ -76,9 +76,6 @@ export const info = (info: IRextInfo = defaultRextInfo, action: IRextAction, act
         message: "Cancelled",
         isCancelled: true
       }
-    case UNMOUNT_REXT: {
-      return defaultRextInfo
-    }
     default:
       return info
   }
@@ -86,29 +83,23 @@ export const info = (info: IRextInfo = defaultRextInfo, action: IRextAction, act
 export const items = (items: IRextItem = defaultRextItem, action: IRextAction, actionIdentity: ActionIdentity) => {
   const { type, payload, meta } = action;
   const { keys } = meta;
-  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } = actionIdentity;
+  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST } = actionIdentity;
   switch (type) {
     case REXT_FETCH.SUCCESS:
     case REXT_CREATE.SUCCESS:
     case REXT_UPDATE.SUCCESS:
       return {
         ...items,
-        [keys.identity]: {
           list: items.list,
           data: getData(items.data, payload.items, keys, payload.params, type, false)
-        }
       }
     case REXT_LIST.SUCCESS:
       return {
         ...items,
-        [keys.identity]: {
+
           data: items.data,
           list: getData(items.list, payload.items, keys, payload.params, type, true)
-        }
       }
-      case UNMOUNT_REXT: {
-      return defaultRextItem
-    }
     default:
       return items
   }
@@ -131,9 +122,8 @@ function getData(previousData: any, newData: any, keys: IRextKeys, params: IRext
   }
 }
 export const resources = (resources: RextResourcesReducer = {}, action: IRextAction, actionIdentity: ActionIdentity) => {
-  const { type, payload, meta } = action
-  const { keys } = meta;
-  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST, UNMOUNT_REXT } = actionIdentity;
+  const { type, payload } = action;
+  const { REXT_FETCH, REXT_CREATE, REXT_UPDATE, REXT_LIST } = actionIdentity;
   switch (type) {
     case REXT_FETCH.REQUEST:
     case REXT_CREATE.REQUEST:
@@ -142,12 +132,9 @@ export const resources = (resources: RextResourcesReducer = {}, action: IRextAct
       {
         return {
           ...resources,
-          [keys.identity]: payload.resources
+          ...payload.resources
         }
       }
-      case UNMOUNT_REXT: {
-      return {}
-    }
     default:
       return resources
   }

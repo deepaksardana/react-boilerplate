@@ -1,12 +1,11 @@
 import { defineRequestType, RequestType } from "../../actions/actions";
-import { IRextParams, IRextKeys, IRextAction } from "./keys";
+import { IRextParams, IRextKeys, IRextAction, IRextMeta } from "./keys";
 
 export interface ActionIdentity {
   REXT_FETCH :RequestType;
   REXT_UPDATE :RequestType;
   REXT_CREATE :RequestType;
   REXT_LIST :RequestType;
-  UNMOUNT_REXT: string;
 }
 
 export function createIdentityAction(identity: string): ActionIdentity {
@@ -14,61 +13,49 @@ export function createIdentityAction(identity: string): ActionIdentity {
     REXT_FETCH: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_FETCH`),
     REXT_UPDATE: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_UPDATE`),
     REXT_CREATE: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_CREATE`),
-    REXT_LIST: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_LIST`),
-    UNMOUNT_REXT: `@${identity}CUSTOM_REDUX_UNMOUNT_REXT`
+    REXT_LIST: defineRequestType(`@${identity}CUSTOM_REDUX_REXT_LIST`)
   }
 }
 
 export const rextActionFunctions = {
-  request: (actions:RequestType, uniqueKey: string, keys: IRextKeys, params: IRextParams, resources?: any): IRextAction => {
+  request: (meta: IRextMeta, params: IRextParams, resources?: any): IRextAction => {
+    const {actions} = meta;
     return {
       type: actions.REQUEST,
-      meta: {
-        uniqueKey, keys, actions
-      },
+      meta,
       payload: {
         params,
         resources
       }
     };
   },
-  success: (actions:RequestType, uniqueKey: string, keys: IRextKeys, params: IRextParams, items: any, message: string):
+  success: (meta: IRextMeta, params: IRextParams, items: any, message: string):
     IRextAction => {
+    const {actions} = meta;
     return {
       type: actions.SUCCESS,
-      meta: {
-        uniqueKey, keys, actions
-      },
+      meta,
       payload: {
         params, items, message
       }
     };
   },
-  failure: (actions:RequestType, uniqueKey: string, keys: IRextKeys, params: IRextParams, message: string): IRextAction => {
+  failure: (meta: IRextMeta, params: IRextParams, message: string): IRextAction => {
+    const {actions} = meta;
     return {
       type: actions.FAILURE,
-      meta: {
-        uniqueKey, keys, actions
-      },
+      meta,
       payload: {
         params, message
       }
     };
   },
-  cancel: (actions: RequestType, uniqueKey: string, keys: IRextKeys): IRextAction => {
+  cancel: (meta: IRextMeta): IRextAction => {
+    const {actions} = meta;
     return {
       type: actions.CANCEL,
-      meta: {
-        uniqueKey, keys, actions
-      },
-      payload: {
-      }
+      meta,
+      payload: {}
     };
   },
 };
-
-export const rextUnmount = (type: string, uniqueKey: string, keys: IRextKeys): {type: string} => {
-  return {
-    type
-  };
-}

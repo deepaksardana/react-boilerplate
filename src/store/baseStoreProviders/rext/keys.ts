@@ -1,21 +1,19 @@
 import { Reducer, Action } from "redux";
 import { RequestType } from "store/actions";
 
+export type IRextActionCalls = {
+  call: IRextActionDefinition;
+  cancel: IRextActionCancelDefinition;
+}
+
 export type IRextActionDefinition = (params: IRextParams, resources?: any) => IRextAction;
 export type IRextActionCancelDefinition = () => IRextAction;
 
-export type IRextUnmountActionDefinition = () => {type: string};
-
 export interface IRextActionCreators {
-  requestRext: IRextActionDefinition;
-  requestRextCancel: IRextActionCancelDefinition;
-  updateRext: IRextActionDefinition;
-  updateRextCancel: IRextActionDefinition;
-  createRext: IRextActionDefinition;
-  createRextCancel: IRextActionDefinition;
-  listRext: IRextActionDefinition;
-  listRextCancel: IRextActionDefinition;
-  unmountRext: IRextUnmountActionDefinition;
+  request: IRextActionCalls;
+  update: IRextActionCalls;
+  create: IRextActionCalls;
+  list: IRextActionCalls;
 }
 export interface IRextMeta {
   uniqueKey: string;

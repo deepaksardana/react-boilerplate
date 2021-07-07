@@ -4,25 +4,33 @@ import {
   items as itemsReducer,
   resources as resourcesReducer   
 } from './reducer';
-import { rextActionFunctions, createIdentityAction, rextUnmount, ActionIdentity } from './actions';
-import { IRextKeys, IRextActionCreators, IRextParams, IRextItem, IRextAction, IRextInfo, IRext } from "./keys";
+import { rextActionFunctions, createIdentityAction, ActionIdentity } from './actions';
+import { IRextKeys, IRextActionCreators, IRextParams, IRextItem, IRextAction, IRextInfo, IRext, IRextMeta } from "./keys";
 import createSagaEvent from "./saga";
 
 
 export const onlyForEndpoint = (uniqueKey: string, reducer: any, actionidentity: ActionIdentity) => (state = {}, action: any = {}) =>
   typeof action.meta == 'undefined' ? state : action.meta.uniqueKey === uniqueKey ? reducer(state, action, actionidentity) : state
 
+
 export const getRextActionCreators = (uniqueKey: string, keys: IRextKeys, actionidentity: ActionIdentity): IRextActionCreators => {
   return {
-    requestRext: (params: IRextParams, resources?: any) => rextActionFunctions.request(actionidentity.REXT_FETCH ,uniqueKey, keys, params, resources),
-    requestRextCancel: () => rextActionFunctions.cancel(actionidentity.REXT_FETCH, uniqueKey, keys),
-    createRext: ( params: IRextParams, resources?: any) => rextActionFunctions.request(actionidentity.REXT_CREATE, uniqueKey, keys, params, resources),
-    createRextCancel: () => rextActionFunctions.cancel(actionidentity.REXT_FETCH, uniqueKey, keys),
-    updateRext: ( params: IRextParams, resources?: any) => rextActionFunctions.request(actionidentity.REXT_UPDATE, uniqueKey, keys, params, resources),
-    updateRextCancel: () => rextActionFunctions.cancel(actionidentity.REXT_FETCH, uniqueKey, keys),
-    listRext: ( params: IRextParams, resources?: any) => rextActionFunctions.request(actionidentity.REXT_LIST, uniqueKey, keys, params, resources),
-    listRextCancel: () => rextActionFunctions.cancel(actionidentity.REXT_FETCH, uniqueKey, keys),
-    unmountRext: () => rextUnmount(actionidentity.UNMOUNT_REXT, uniqueKey, keys)
+    request: {
+      call: (params: IRextParams, resources?: any) => rextActionFunctions.request({actions: actionidentity.REXT_FETCH, uniqueKey, keys}, params, resources),
+      cancel: () => rextActionFunctions.cancel({actions: actionidentity.REXT_FETCH, uniqueKey, keys})
+    },
+    create: {
+      call: ( params: IRextParams, resources?: any) => rextActionFunctions.request({actions: actionidentity.REXT_FETCH, uniqueKey, keys}, params, resources),
+      cancel: () => rextActionFunctions.cancel({actions: actionidentity.REXT_CREATE, uniqueKey, keys})
+    },
+    list: {
+      call: ( params: IRextParams, resources?: any) => rextActionFunctions.request({actions: actionidentity.REXT_FETCH, uniqueKey, keys}, params, resources),
+      cancel: () => rextActionFunctions.cancel({actions: actionidentity.REXT_LIST, uniqueKey, keys})
+    },
+    update: {
+      call: ( params: IRextParams, resources?: any) => rextActionFunctions.request({actions: actionidentity.REXT_FETCH, uniqueKey, keys}, params, resources),
+      cancel: () => rextActionFunctions.cancel({actions: actionidentity.REXT_UPDATE, uniqueKey, keys})
+    }
   }
 }
 export const rext = (items: Reducer<IRextItem, IRextAction>,

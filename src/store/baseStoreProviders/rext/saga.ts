@@ -22,12 +22,12 @@ function* performRequestRextOperation(action: IRextAction): IterableIterator<{}>
       response = yield call(fetchGetRequest, controller, url, token, meta.keys.method, payload.params && payload.params.headers);
     }
 
-    yield put(rextActionFunctions.success(meta.actions, meta.uniqueKey, meta.keys, payload.params!, response.data || response.record || response, response.message || "Execution Done Successfully"));
+    yield put(rextActionFunctions.success(meta, payload.params!, response.data || response.record || response, response.message || "Execution Done Successfully"));
   } catch (error) {
     if (yield (cancelled())) {
       controller.abort();
     } else {
-      yield put(rextActionFunctions.failure(meta.actions, meta.uniqueKey, meta.keys, payload.params!, error.message || "Execution Failed"));
+      yield put(rextActionFunctions.failure(meta, payload.params!, error.message || "Execution Failed"));
     }
   } finally {
     if (yield (cancelled())) {

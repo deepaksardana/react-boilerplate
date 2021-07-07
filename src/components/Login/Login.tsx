@@ -120,9 +120,9 @@ const mapStateToProps = (state: ApplicationState, ownProps: OwnProps): StateProp
 const mapDispatchStateToProps: DispatchProps = {
   requestLogin: loginAction.request,
   unmountLogin: loginAction.cancel,
-  requestTest: textRext.requestRext,
-  cancelRequestTest: textRext.requestRextCancel,
-  requestTest1: textRext1.requestRext
+  requestTest: textRext.request.call,
+  cancelRequestTest: textRext.request.cancel,
+  requestTest1: textRext1.request.call
 };
 
 export default  connect<StateProps, DispatchProps, OwnProps, ApplicationState>(mapStateToProps, mapDispatchStateToProps)(LoginContainer);
