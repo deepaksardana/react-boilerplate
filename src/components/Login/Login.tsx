@@ -12,12 +12,13 @@ import { ApplicationState, AuthState } from "store/reducers";
 import { ILogin } from "interface";
 import { ActionCreator, loginAction } from "store/actions";
 import { getAuthState } from "store/selectors";
-import { textRext } from "rext";
+import { textRext, textRext1 } from "rext";
 import { getRextState, IRextActionCancelDefinition, IRextActionDefinition, IRextState } from "store/baseStoreProviders";
 interface DispatchProps {
   requestLogin: ActionCreator;
   unmountLogin: ActionCreator;
   requestTest: IRextActionDefinition;
+  requestTest1: IRextActionDefinition;
   cancelRequestTest: IRextActionCancelDefinition;
 }
 
@@ -25,6 +26,8 @@ interface StateProps {
   loginState: AuthState;
   initialValues: ILogin;
   testRextSTate: IRextState;
+  testRextSTate1: IRextState;
+
 }
 
 interface OwnProps {
@@ -76,6 +79,9 @@ class LoginForm extends React.Component<FormProps, State> {
             this.props.requestTest({});
           }}>testRext</button>
           <button type="button" onClick={()=> {
+            this.props.requestTest1({});
+          }}>testRext</button>
+          <button type="button" onClick={()=> {
             this.props.cancelRequestTest();
           }}>unmount</button>
         </Form>
@@ -106,7 +112,8 @@ const mapStateToProps = (state: ApplicationState, ownProps: OwnProps): StateProp
       email: "",
       password: ""
     },
-    testRextSTate: getRextState(state.textRext, {})
+    testRextSTate: getRextState(state.textRext, {}),
+    testRextSTate1: getRextState(state.textRext1, {})
   }
 };
 
@@ -114,7 +121,8 @@ const mapDispatchStateToProps: DispatchProps = {
   requestLogin: loginAction.request,
   unmountLogin: loginAction.cancel,
   requestTest: textRext.requestRext,
-  cancelRequestTest: textRext.requestRextCancel
+  cancelRequestTest: textRext.requestRextCancel,
+  requestTest1: textRext1.requestRext
 };
 
 export default  connect<StateProps, DispatchProps, OwnProps, ApplicationState>(mapStateToProps, mapDispatchStateToProps)(LoginContainer);
