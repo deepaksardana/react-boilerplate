@@ -30,7 +30,7 @@ interface Props {
 }
 
 function App(props: Props) {
-  const { history } = props;
+  const { history } = props; 
   return (
     <ConnectedRouter history={history}>
       <Switch>

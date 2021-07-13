@@ -12,6 +12,7 @@ export interface IRegister {
 
 export interface IAuthenticationResponse {
     token: string;
+    user: string;
 }
 
 export interface IForgotPassword {
