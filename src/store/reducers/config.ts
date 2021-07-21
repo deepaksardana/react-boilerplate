@@ -3,7 +3,7 @@ export interface ConfigState {
 }
 
 const INITIAL_STATE: ConfigState = {
-  baseUrl: process.env.REACT_APP_BASE_URL || "https://reqres.in"
+  baseUrl: process.env.REACT_APP_BASE_URL || "/backend"
 };
 
 

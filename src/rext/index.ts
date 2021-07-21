@@ -1,20 +1,30 @@
 import { createRext, IRext, IRextKeys } from "store/baseStoreProviders";
 import URLRoutes from "URLRoutes";
 
-const testRextKeys: IRextKeys = {
-    identity: "testRext",
-    method: 'get',
-    primaryKey: "",
-    url: URLRoutes.server.forgot
-} 
+export const forgotPassword: IRext = createRext({
+  identity: "forgotPassword",
+  method: 'post',
+  primaryKey: "",
+  url: URLRoutes.server.forgot
+});
 
-const testRextKeys1: IRextKeys = {
-    identity: "testRext1",
-    method: 'get',
-    primaryKey: "",
-    url: URLRoutes.server.forgot
-} 
+export const updateForgotPassword: IRext = createRext({
+  identity: "updateForgotPassword",
+  method: 'post',
+  primaryKey: "",
+  url: URLRoutes.server.forgotChangePassword
+});
 
+export const userRoles: IRext = createRext({
+  identity: "userRoles",
+  method: 'get',
+  primaryKey: "",
+  url: URLRoutes.server.fetchUsersRoles
+});
 
-export const textRext: IRext = createRext(testRextKeys);
-export const textRext1: IRext = createRext(testRextKeys1);
+export const userTypes: IRext = createRext({
+  identity: "userRoles",
+  method: 'get',
+  primaryKey: "",
+  url: URLRoutes.server.fetchUsersTypes
+});

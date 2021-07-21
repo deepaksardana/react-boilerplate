@@ -1,5 +1,5 @@
 import { IUser } from "interface";
-import { FORGOT_PASSWORD_ACTION, LOGIN_ACTION, REGISTER_ACTION, FETCH_USER_ACTION } from "store/actions";
+import { LOGIN_ACTION, REGISTER_ACTION, FETCH_USER_ACTION } from "store/actions";
 
 export interface AuthState {
   isAuthenticated: boolean;
@@ -12,8 +12,8 @@ export interface AuthState {
 }
 
 const INITIAL_STATE: AuthState = {
-  isAuthenticated: false,
-  token: localStorage.getItem('app-token')!,
+  isAuthenticated: !!localStorage.getItem(process.env.REACT_APP_TOKEN_KEY || "APP_TOKEN"),
+  token: localStorage.getItem(process.env.REACT_APP_TOKEN_KEY || "APP_TOKEN")!,
   user: undefined!,
   isLoading: false,
   error: false,
@@ -26,7 +26,6 @@ const authState = (state: AuthState = INITIAL_STATE, action: any): AuthState => 
   switch (type) {
     case LOGIN_ACTION.REQUEST:
     case REGISTER_ACTION.REQUEST:
-    case FORGOT_PASSWORD_ACTION.REQUEST:
     case FETCH_USER_ACTION.REQUEST:
       return {
         ...state,
@@ -52,17 +51,8 @@ const authState = (state: AuthState = INITIAL_STATE, action: any): AuthState => 
         user: payload.user
       }
     }
-    case FORGOT_PASSWORD_ACTION.SUCCESS:
-      return {
-        ...state,
-        error: undefined!,
-        message: payload.message,
-        isLoading: false,
-        token: undefined!,
-      };
     case LOGIN_ACTION.FAILURE:
     case REGISTER_ACTION.FAILURE:
-    case FORGOT_PASSWORD_ACTION.FAILURE:
     case FETCH_USER_ACTION.FAILURE:
       return {
         ...state,
@@ -72,7 +62,6 @@ const authState = (state: AuthState = INITIAL_STATE, action: any): AuthState => 
       };
     case LOGIN_ACTION.CANCEL:
     case REGISTER_ACTION.CANCEL:
-    case FORGOT_PASSWORD_ACTION.CANCEL:
     case FETCH_USER_ACTION.CANCEL:
       return {
         ...state,

@@ -5,7 +5,7 @@ import { reducer as formReducer, FormStateMap } from 'redux-form'
 
 import authState, { AuthState } from "./auth";
 import configState, { ConfigState } from "./config"
-import { textRext, textRext1 } from "rext";
+import { forgotPassword, updateForgotPassword, userRoles, userTypes } from "rext";
 import { IRextReducer } from "store/baseStoreProviders";
 export type { AuthState } from "./auth";
 
@@ -14,8 +14,12 @@ export interface ApplicationState {
   form: FormStateMap;
   configState: ConfigState;
   authState: AuthState;
-  textRext: IRextReducer;
-  textRext1: IRextReducer;
+  forgotPasswordState: IRextReducer;
+  updateForgotPassword: IRextReducer;
+  common: {
+    userRoles: IRextReducer;
+    userTypes: IRextReducer;
+  }
 }
 
 const rootReducer =  (history: History) => combineReducers<ApplicationState>({
@@ -23,8 +27,12 @@ const rootReducer =  (history: History) => combineReducers<ApplicationState>({
   form: formReducer,
   configState,
   authState,
-  textRext: textRext.reducers,
-  textRext1: textRext1.reducers
+  forgotPasswordState: forgotPassword.reducers,
+  updateForgotPassword: updateForgotPassword.reducers,
+  common: combineReducers({
+    userRoles: userRoles.reducers,
+    userTypes: userTypes.reducers
+  })
 })
 
 export default rootReducer;

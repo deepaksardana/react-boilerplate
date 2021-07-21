@@ -19,4 +19,9 @@ export interface IForgotPassword {
     email: string;
 }
 
+export interface IUpdateForgotPassword {
+    newPassword: string;
+    confirmPassword: string;
+}
+
 export * from "./IUser";

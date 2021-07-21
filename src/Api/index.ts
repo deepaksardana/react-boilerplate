@@ -59,7 +59,6 @@ function handleResponse(response: Response) {
     }
     if (response.status === 401) {
       let err = new Error("Unauthorized");
-      window.location.reload();
       reject(err);
     }
     if (response.status === 404) {

@@ -1,6 +1,9 @@
 export const server = {
-    login: "/api/login",
-    register: "/api/register",
-    forgot: "/api/users?delay=2",
-    fetchUser: "/api/fetchuser"
+    login: "/auth/signin",
+    register: "/auth/signup/user",
+    forgot: "/auth/forgetPassword",
+    forgotChangePassword: "/auth/resetPassword",
+    fetchUsersRoles: "/api/list/roles",
+    fetchUsersTypes: "/api/list/types",
+    fetchUser: "/api/users/currentUser"
 };

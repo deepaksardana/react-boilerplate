@@ -12,22 +12,14 @@ import { ApplicationState, AuthState } from "store/reducers";
 import { ILogin } from "interface";
 import { ActionCreator, loginAction } from "store/actions";
 import { getAuthState } from "store/selectors";
-import { textRext, textRext1 } from "rext";
-import { getRextState, IRextActionCancelDefinition, IRextActionDefinition, IRextState } from "store/baseStoreProviders";
 interface DispatchProps {
   requestLogin: ActionCreator;
   unmountLogin: ActionCreator;
-  requestTest: IRextActionDefinition;
-  requestTest1: IRextActionDefinition;
-  cancelRequestTest: IRextActionCancelDefinition;
 }
 
 interface StateProps {
   loginState: AuthState;
   initialValues: ILogin;
-  testRextSTate: IRextState;
-  testRextSTate1: IRextState;
-
 }
 
 interface OwnProps {
@@ -75,15 +67,6 @@ class LoginForm extends React.Component<FormProps, State> {
           <Link to={URLRoutes.client.FORGOT}>Forgot Password</Link>
 
           <Button>Submit</Button>
-          <button type="button" onClick={()=> {
-            this.props.requestTest({});
-          }}>testRext</button>
-          <button type="button" onClick={()=> {
-            this.props.requestTest1({});
-          }}>testRext</button>
-          <button type="button" onClick={()=> {
-            this.props.cancelRequestTest();
-          }}>unmount</button>
         </Form>
       </div>
     );
@@ -105,24 +88,18 @@ const LoginContainer = reduxForm({
 
 
 const mapStateToProps = (state: ApplicationState, ownProps: OwnProps): StateProps => {
-  console.log(state);
   return {
     loginState: getAuthState(state),
     initialValues: {
       email: "",
       password: ""
-    },
-    testRextSTate: getRextState(state.textRext, {}),
-    testRextSTate1: getRextState(state.textRext1, {})
+    }
   }
 };
 
 const mapDispatchStateToProps: DispatchProps = {
   requestLogin: loginAction.request,
-  unmountLogin: loginAction.cancel,
-  requestTest: textRext.request.call,
-  cancelRequestTest: textRext.request.cancel,
-  requestTest1: textRext1.request.call
+  unmountLogin: loginAction.cancel
 };
 
 export default  connect<StateProps, DispatchProps, OwnProps, ApplicationState>(mapStateToProps, mapDispatchStateToProps)(LoginContainer);

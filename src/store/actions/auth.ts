@@ -1,8 +1,7 @@
-import { IAuthenticationResponse, IForgotPassword, ILogin, IRegister, IUser } from "interface";
+import { IAuthenticationResponse, ILogin, IRegister, IUser } from "interface";
 import { defineRequestType, RequestType, StandardAction } from "./actions";
 export const LOGIN_ACTION: RequestType = defineRequestType("LOGIN_ACTION");
 export const REGISTER_ACTION: RequestType = defineRequestType("REGISTER_ACTION");
-export const FORGOT_PASSWORD_ACTION: RequestType = defineRequestType("FORGOT_PASSWORD_ACTION");
 export const FETCH_USER_ACTION: RequestType = defineRequestType("FETCH_USER_ACTION");
 
 export const loginAction = {
@@ -56,33 +55,6 @@ export const registerAction = {
     }
   }
 };
-
-export const forgotPasswordAction = {
-  request: (payload: IForgotPassword): StandardAction => {
-    return {
-      type: FORGOT_PASSWORD_ACTION.REQUEST,
-      payload: payload
-    }
-  },
-  success: (message: string): StandardAction => {
-    return {
-      type: FORGOT_PASSWORD_ACTION.SUCCESS,
-      payload: { message }
-    }
-  },
-  failure: (error: string): StandardAction => {
-    return {
-      type: FORGOT_PASSWORD_ACTION.FAILURE,
-      payload: { error }
-    }
-  },
-  cancel: (): StandardAction => {
-    return {
-      type: FORGOT_PASSWORD_ACTION.CANCEL
-    }
-  }
-};
-
 
 export const fetchUserAction = {
   request: (): StandardAction => {
